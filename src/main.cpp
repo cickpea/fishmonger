@@ -19,6 +19,7 @@ int main()
     uart_init(BAUD, 0);
     I2C_Init();
     MPU6050_Init();
+    adc_init();
 
     int16_t AcX, AcY, AcZ;
     double x, y, z, bot = 9.5, height;
