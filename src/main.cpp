@@ -5,6 +5,7 @@
 #include "uart_hal.h"
 #include "mpu6050.h"
 #include "distance.h"
+#include "temp.h"
 
 #define BAUD 9600
 #define RAD_TO_DEG 57.2958
@@ -30,12 +31,15 @@ int main()
         z = RAD_TO_DEG * (atan2(-AcY, -AcX) + PI);
         height = -bot * sin(x / RAD_TO_DEG);
 
+        //uint16_t adc_value = adc_read(0);                  // Read from ADC channel 0
+        //float temperature = lm235z_temperature(adc_value); // Convert ADC value to temperature
+
         long distance = measureDistance();
 
         char buffer[50];
-        snprintf(buffer, sizeof(buffer), "AngleX= %.2f\t\tDistance: %ld cm\n", x, distance);
+        snprintf(buffer, sizeof(buffer), "\r\rAngleX= %.2f\t\tDistance: %ld cm\t\tTemp: %.2f\n", x, distance);
         uart_send_string(buffer);
-        snprintf(buffer, sizeof(buffer), "height= %.2f\n\n", height);
+        snprintf(buffer, sizeof(buffer), "height= %.2f", height);
         uart_send_string(buffer);
 
         _delay_ms(1000);
