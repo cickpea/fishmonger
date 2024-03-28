@@ -29,17 +29,15 @@ int main()
         x = RAD_TO_DEG * (atan2(-AcY, -AcZ) + PI);
         y = RAD_TO_DEG * (atan2(-AcX, -AcZ) + PI);
         z = RAD_TO_DEG * (atan2(-AcY, -AcX) + PI);
-        height = -bot * sin(x / RAD_TO_DEG);
+        height = fabs(bot * sin(x / RAD_TO_DEG));
 
         //uint16_t adc_value = adc_read(0);                  // Read from ADC channel 0
         //float temperature = lm235z_temperature(adc_value); // Convert ADC value to temperature
 
         long distance = measureDistance();
 
-        char buffer[50];
-        snprintf(buffer, sizeof(buffer), "\r\rAngleX= %.2f\t\tDistance: %ld cm\t\tTemp: %.2f\n", x, distance);
-        uart_send_string(buffer);
-        snprintf(buffer, sizeof(buffer), "height= %.2f", height);
+        char buffer[80];
+        snprintf(buffer, sizeof(buffer), "\rAngleX= %.2f\t\theight= %.2f\t\tDistance= %ld cm", x, height, distance);
         uart_send_string(buffer);
 
         _delay_ms(1000);
