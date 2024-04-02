@@ -20,22 +20,20 @@ int main()
     MPU6050_Init();
 
     int16_t AcX, AcY, AcZ;
-    double x, y, z, bot = 9.5, height;
+    double x, bot = 9.5, height;
 
     while (1)
     {
         MPU6050_ReadAccelerometer(&AcX, &AcY, &AcZ);
         x = RAD_TO_DEG * (atan2(-AcY, -AcZ) + PI);
-        y = RAD_TO_DEG * (atan2(-AcX, -AcZ) + PI);
-        z = RAD_TO_DEG * (atan2(-AcY, -AcX) + PI);
         height = -bot * sin(x / RAD_TO_DEG);
 
         long distance = measureDistance();
 
         char buffer[50];
-        snprintf(buffer, sizeof(buffer), "AngleX= %.2f\t\tDistance: %ld cm\n", x, distance);
+        snprintf(buffer, sizeof(buffer), "\r\rAngleX= %.2f\t\tDistance: %ld cm\t\tTemp: %.2f", x, distance);
         uart_send_string(buffer);
-        snprintf(buffer, sizeof(buffer), "height= %.2f\n\n", height);
+        snprintf(buffer, sizeof(buffer), "height= %.2f", height);
         uart_send_string(buffer);
 
         _delay_ms(1000);
