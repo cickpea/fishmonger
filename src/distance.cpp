@@ -13,7 +13,7 @@ long measureDistance() {
     TCCR1B |= (1 << CS11); 
     while (HC_PIN & (1 << ECHO_PIN));
     TCCR1B = 0; 
-    duration = TCNT1/2; //idk why but my timer needs to divide by 4
+    duration = TCNT1/2; 
     
     distance = duration * 0.017; 
     if (distance >= 400)

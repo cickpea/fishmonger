@@ -5,6 +5,7 @@
 #include "uart_hal.h"
 #include "mpu6050.h"
 #include "distance.h"
+#include "temp.h"
 
 #define BAUD 9600
 #define RAD_TO_DEG 57.2958
@@ -18,6 +19,7 @@ int main()
     uart_init(BAUD, 0);
     I2C_Init();
     MPU6050_Init();
+    adc_init();
 
     int16_t AcX, AcY, AcZ;
     double x, bot = 9.5, height;
@@ -29,12 +31,19 @@ int main()
         height = -bot * sin(x / RAD_TO_DEG);
 
         long distance = measureDistance();
+        uint16_t adc_value = adc_read(0);
+        float temperature = lm235z_temperature(adc_value);
 
-        char buffer[50];
-        snprintf(buffer, sizeof(buffer), "\r\rAngleX= %.2f\t\tDistance: %ld cm\t\tTemp: %.2f", x, distance);
+        char buffer[80];
+        snprintf(buffer, sizeof(buffer), "\r\rAngleX= %.2f\t\tDistance: %ld cm", x, distance);
         uart_send_string(buffer);
-        snprintf(buffer, sizeof(buffer), "height= %.2f", height);
+        snprintf(buffer, sizeof(buffer), "\t\theight= %.2f", height);
         uart_send_string(buffer);
+
+        if(distance < 20){
+        snprintf(buffer, sizeof(buffer), "\t\tTemperature: %.2f\n", temperature);
+        uart_send_string(buffer);
+        }
 
         _delay_ms(1000);
     }
