@@ -6,6 +6,7 @@
 #include "mpu6050.h"
 #include "distance.h"
 #include "temp.h"
+#include "temp.h"
 
 #define BAUD 9600
 #define RAD_TO_DEG 57.2958
@@ -19,6 +20,7 @@ int main()
     uart_init(BAUD, 0);
     I2C_Init();
     MPU6050_Init();
+    adc_init();
 
     int16_t AcX, AcY, AcZ;
     double x, bot = 9.5, height;
