@@ -19,7 +19,6 @@ int main()
     uart_init(BAUD, 0);
     I2C_Init();
     MPU6050_Init();
-    adc_init();
 
     int16_t AcX, AcY, AcZ;
     double x, bot = 9.5, height;
@@ -31,8 +30,9 @@ int main()
         height = -bot * sin(x / RAD_TO_DEG);
 
         long distance = measureDistance();
-        uint16_t adc_value = adc_read(0);
-        float temperature = lm235z_temperature(adc_value);
+
+        uint16_t temperature, humidity;
+        read_dht_data(&temperature, &humidity);
 
         char buffer[80];
         snprintf(buffer, sizeof(buffer), "\r\rAngleX= %.2f\t\tDistance: %ld cm", x, distance);

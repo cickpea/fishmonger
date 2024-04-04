@@ -5,8 +5,11 @@
 #include <util/delay.h>
 #include <stdio.h>
 
-void adc_init();
-uint16_t adc_read(uint8_t);
-float lm235z_temperature(uint16_t);
+#define DHT_PIN PC2
+#define DHT_PORT PORTC
+#define DHT_DDR DDRC
+#define DHT_PINC PINC
+
+uint8_t read_dht_data(uint16_t* temperature, uint16_t* humidity);
 
 #endif TEMP_H_
