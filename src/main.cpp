@@ -42,7 +42,8 @@ int main()
         uart_send_string(buffer);
 
         if(distance < 20){
-        snprintf(buffer, sizeof(buffer), "\t\tTemperature: %.2f\n", temperature);
+        sprintf(buffer, "Temperature: %u.%u C\n",
+          temperature / 10, temperature % 10);
         uart_send_string(buffer);
         }
 
