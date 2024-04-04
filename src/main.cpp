@@ -36,13 +36,13 @@ int main()
         read_dht_data(&temperature, &humidity);
 
         char buffer[80];
-        snprintf(buffer, sizeof(buffer), "\r\rAngleX= %.2f\t\tDistance: %ld cm", x, distance);
+        snprintf(buffer, sizeof(buffer), "\n\tDistance: %ld cm", distance);
         uart_send_string(buffer);
-        snprintf(buffer, sizeof(buffer), "\t\theight= %.2f", height);
+        snprintf(buffer, sizeof(buffer), "\t\tHeight: %.2f", fabs(height));
         uart_send_string(buffer);
 
         if(distance < 20){
-        sprintf(buffer, "Temperature: %u.%u C\n",
+        sprintf(buffer, "\t\tTemperature: %u.%u C",
           temperature / 10, temperature % 10);
         uart_send_string(buffer);
         }
